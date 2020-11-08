@@ -18,6 +18,40 @@ mongoose.connect('mongodb://localhost:27017/newDB', (err) => {
     }
 });
 
+app.post('/addUser', (req, res) => {
+    console.log('Adding new user');
+    var userObj = {
+        "_id": new mongoose.Types.ObjectId(),
+        "name": req.body.name
+    };
+    var newUser = new User(userObj);
+    newUser.save((err, user) => {
+        if (err) {
+            res.status(400).send('There is an error while adding new user');
+        } else {
+            res.status(200).json(user);
+        }
+    });
+});
+
+app.post('/addDoc', (req, res) => {
+    console.log('Adding new Doc');
+    var docObj = {
+        "_id": new mongoose.Types.ObjectId(),
+        "title": req.body.title,
+        "description": req.body.description,
+        "user": ""
+    };
+    var newObj = new Doc(docObj);
+    newObj.save((err, user) => {
+        if (err) {
+            res.status(400).send('There is an error while adding new Doc');
+        } else {
+            res.status(200).json(user);
+        }
+    });
+});
+
 app.get('/', (req, res) => {
     res.send(`<h1>Home Page</h1>`);
 });
