@@ -52,6 +52,32 @@ app.post('/addDoc', (req, res) => {
     });
 });
 
+app.put('/docs/:id', (req, res) => {
+    console.log('Editing a Document');
+    var docObj = {
+        "title": req.body.title,
+        "description": req.body.description
+    };
+    Doc.findByIdAndUpdate(req.params.id, docObj, { new: true }).exec((err, docs) => {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
+
+app.delete('/docs/:id', (req, res) => {
+    console.log('Deleting a Document');
+    Doc.findByIdAndDelete(req.params.id).exec((err, docs) => {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.status(200).json(docs);
+        }
+    })
+})
+
 app.get('/users', (req, res) => {
     console.log('Getting all Users');
     User.find({}).populate('user').exec((err, users) => {
