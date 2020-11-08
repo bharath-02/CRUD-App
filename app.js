@@ -40,7 +40,7 @@ app.post('/addDoc', (req, res) => {
         "_id": new mongoose.Types.ObjectId(),
         "title": req.body.title,
         "description": req.body.description,
-        "user": ""
+        "user": "5fa79f235b765c2c881fc3a6"
     };
     var newObj = new Doc(docObj);
     newObj.save((err, user) => {
