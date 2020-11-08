@@ -63,6 +63,17 @@ app.get('/users', (req, res) => {
     });
 });
 
+app.get('/docs', (req, res) => {
+    console.log('Getting all Docs');
+    Doc.find({}).populate('user').exec((err, docs) => {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.status(200).json(docs)
+        }
+    });
+});
+
 app.get('/', (req, res) => {
     res.send(`<h1>Home Page</h1>`);
 });
