@@ -52,6 +52,17 @@ app.post('/addDoc', (req, res) => {
     });
 });
 
+app.get('/users', (req, res) => {
+    console.log('Getting all Users');
+    User.find({}).populate('user').exec((err, users) => {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.status(200).json(users);
+        }
+    });
+});
+
 app.get('/', (req, res) => {
     res.send(`<h1>Home Page</h1>`);
 });
