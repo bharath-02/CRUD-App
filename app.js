@@ -1,109 +1,20 @@
-var express = require('express');
-var app = express();
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
-const { urlencoded } = require('body-parser');
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const colors = require('colors');
+const infoRouter = require('./routes/router');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-var Doc = require('./Docs.model');
-var User = require('./User.model');
-
-mongoose.connect('mongodb://localhost:27017/newDB', (err) => {
+mongoose.connect('mongodb://localhost:27017/CRUD-db', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
     if (err) {
-        console.log('Error Occured');
+        console.log('Error Occured'.red.bold);
     } else {
-        console.log('Server connected to mongoDB');
+        console.log('Server connected to mongoDB'.cyan.bold);
     }
 });
 
-app.post('/addUser', (req, res) => {
-    console.log('Adding new user');
-    var userObj = {
-        "_id": new mongoose.Types.ObjectId(),
-        "name": req.body.name
-    };
-    var newUser = new User(userObj);
-    newUser.save((err, user) => {
-        if (err) {
-            res.status(400).send('There is an error while adding new user');
-        } else {
-            res.status(200).json(user);
-        }
-    });
-});
-
-app.post('/addDoc', (req, res) => {
-    console.log('Adding new Doc');
-    var docObj = {
-        "_id": new mongoose.Types.ObjectId(),
-        "title": req.body.title,
-        "description": req.body.description,
-        "user": "5fa79f235b765c2c881fc3a6"
-    };
-    var newObj = new Doc(docObj);
-    newObj.save((err, user) => {
-        if (err) {
-            res.status(400).send('There is an error while adding new Doc');
-        } else {
-            res.status(200).json(user);
-        }
-    });
-});
-
-app.put('/docs/:id', (req, res) => {
-    console.log('Editing a Document');
-    var docObj = {
-        "title": req.body.title,
-        "description": req.body.description
-    };
-    Doc.findByIdAndUpdate(req.params.id, docObj, { new: true }).exec((err, docs) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            res.status(200).json(docs);
-        }
-    });
-});
-
-app.delete('/docs/:id', (req, res) => {
-    console.log('Deleting a Document');
-    Doc.findByIdAndDelete(req.params.id).exec((err, docs) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            res.status(200).json(docs);
-        }
-    })
-})
-
-app.get('/users', (req, res) => {
-    console.log('Getting all Users');
-    User.find({}).populate('user').exec((err, users) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            res.status(200).json(users);
-        }
-    });
-});
-
-app.get('/docs', (req, res) => {
-    console.log('Getting all Docs');
-    Doc.find({}).populate('user').exec((err, docs) => {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            res.status(200).json(docs)
-        }
-    });
-});
-
-app.get('/', (req, res) => {
-    res.send(`<h1>Home Page</h1>`);
-});
+app.use('/info', infoRouter);
 
 app.listen(3500, () => {
-    console.log('Listening on port: 3500');
+    console.log('Listening on port: 3500'.yellow.bold);
 })
