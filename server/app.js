@@ -6,15 +6,15 @@ const colors = require('colors');
 const morgan = require('morgan');
 const infoRouter = require('./routes/router');
 
-// Routes 
-app.use('/info', infoRouter);
-
 // Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
 
+// Routes
+app.use('/info', infoRouter);
+
 // Connection to the Database
-mongoose.connect('mongodb://localhost:27017/CRUD-db', { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect('mongodb://localhost:27017/CRUD-db', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true }, (err) => {
     if (err) {
         console.log('Error Occured'.red.bold);
     } else {
@@ -23,6 +23,6 @@ mongoose.connect('mongodb://localhost:27017/CRUD-db', { useNewUrlParser: true, u
 });
 
 // Listening to port
-app.listen(3500, () => {
-    console.log('Listening on port: 3500'.yellow.bold);
+app.listen(5100, () => {
+    console.log('Listening on port: 5100'.yellow.bold);
 })

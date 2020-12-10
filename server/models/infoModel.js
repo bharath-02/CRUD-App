@@ -7,7 +7,7 @@ const infoSchema = mongoose.Schema({
         trim: true
     },
     Age: {
-        type: String,
+        type: Number,
         required: true
     },
     City: {
