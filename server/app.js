@@ -4,9 +4,11 @@ const app = express();
 const mongoose = require('mongoose');
 const colors = require('colors');
 const morgan = require('morgan');
+const cors = require('cors');
 const infoRouter = require('./routes/router');
 
 // Middlewares
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
